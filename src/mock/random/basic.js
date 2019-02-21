@@ -1,6 +1,7 @@
 /*
     ## Basics
 */
+import random from "random"
 module.exports = {
     // 返回一个随机的布尔值。
     boolean: function(min, max, cur) {
@@ -32,18 +33,18 @@ module.exports = {
     },
     // 返回一个随机的浮点数。
     float: function(min, max, dmin, dmax) {
-        dmin = dmin === undefined ? 0 : dmin
-        dmin = Math.max(Math.min(dmin, 17), 0)
-        dmax = dmax === undefined ? 17 : dmax
-        dmax = Math.max(Math.min(dmax, 17), 0)
-        var ret = this.integer(min, max) + '.';
-        for (var i = 0, dcount = this.natural(dmin, dmax); i < dcount; i++) {
-            ret += (
-                // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
-                (i < dcount - 1) ? this.character('number') : this.character('123456789')
-            )
-        }
-        return parseFloat(ret, 10)
+         dmin = dmin === undefined ? 0 : dmin
+         dmin = Math.max(Math.min(dmin, 17), 0)
+         dmax = dmax === undefined ? 17 : dmax
+         dmax = Math.max(Math.min(dmax, 17), 0)
+        // var ret = this.integer(min, max) + '.';
+        // for (var i = 0, dcount = this.natural(dmin, dmax); i < dcount; i++) {
+        //     ret += (
+        //         // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
+        //         (i < dcount - 1) ? this.character('number') : this.character('123456789')
+        //     )
+        // }
+        return random.float(min, max).toFixed(random.int(dmin,dmax));
     },
     // 返回一个随机字符。
     character: function(pool) {

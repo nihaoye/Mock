@@ -11,7 +11,8 @@
   ],
   "author": "nuysoft@gmail.com",
   "dependencies": {
-    "commander": "*"
+    "commander": "*",
+    "random": "^2.0.13"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
