@@ -991,7 +991,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //         (i < dcount - 1) ? this.character('number') : this.character('123456789')
 	        //     )
 	        // }
-	        return random.float(min, max).toFixed(random.int(dmin,dmax));
+	        return random.float(min, max);
 	    },
 	    // 返回一个随机字符。
 	    character: function(pool) {
