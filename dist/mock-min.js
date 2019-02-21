@@ -980,10 +980,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    // 返回一个随机的浮点数。
 	    float: function(min, max, dmin, dmax) {
-	         dmin = dmin === undefined ? 0 : dmin
+	         dmin = dmin === undefined ? 8 : dmin
 	         dmin = Math.max(Math.min(dmin, 17), 0)
-	         dmax = dmax === undefined ? 17 : dmax
-	         dmax = Math.max(Math.min(dmax, 17), 0)
+	         dmax = dmax === undefined ? 10 : dmax
+	         dmax = Math.max(Math.min(dmax, 10), 0)
 	        // var ret = this.integer(min, max) + '.';
 	        // for (var i = 0, dcount = this.natural(dmin, dmax); i < dcount; i++) {
 	        //     ret += (
