@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* global require, module, window */
 	var Handler = __webpack_require__(1)
@@ -122,9 +122,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Mock
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* 
 	    ## Handler
@@ -667,9 +667,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Handler
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Constant
@@ -705,9 +705,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // RE_KEY: /^key$/
 	}
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Utilities
@@ -836,9 +836,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Util
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 		## Parser
@@ -912,9 +912,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Mock.Random
@@ -941,13 +941,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Random
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Basics
 	*/
+	import random from "random"
 	module.exports = {
 	    // 返回一个随机的布尔值。
 	    boolean: function(min, max, cur) {
@@ -979,18 +980,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    // 返回一个随机的浮点数。
 	    float: function(min, max, dmin, dmax) {
-	        dmin = dmin === undefined ? 0 : dmin
-	        dmin = Math.max(Math.min(dmin, 17), 0)
-	        dmax = dmax === undefined ? 17 : dmax
-	        dmax = Math.max(Math.min(dmax, 17), 0)
-	        var ret = this.integer(min, max) + '.';
-	        for (var i = 0, dcount = this.natural(dmin, dmax); i < dcount; i++) {
-	            ret += (
-	                // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
-	                (i < dcount - 1) ? this.character('number') : this.character('123456789')
-	            )
-	        }
-	        return parseFloat(ret, 10)
+	         dmin = dmin === undefined ? 0 : dmin
+	         dmin = Math.max(Math.min(dmin, 17), 0)
+	         dmax = dmax === undefined ? 17 : dmax
+	         dmax = Math.max(Math.min(dmax, 17), 0)
+	        // var ret = this.integer(min, max) + '.';
+	        // for (var i = 0, dcount = this.natural(dmin, dmax); i < dcount; i++) {
+	        //     ret += (
+	        //         // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
+	        //         (i < dcount - 1) ? this.character('number') : this.character('123456789')
+	        //     )
+	        // }
+	        return random.float(min, max).toFixed(random.int(dmin,dmax));
 	    },
 	    // 返回一个随机字符。
 	    character: function(pool) {
@@ -1072,9 +1073,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+
+/***/ }),
 /* 7 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Date
@@ -1218,9 +1220,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* global document  */
 	/*
@@ -1506,9 +1508,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = function(module) {
 		if(!module.webpackPolyfill) {
@@ -1522,9 +1524,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Color
@@ -1664,9 +1666,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Color Convert
@@ -1846,9 +1848,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Color 字典数据
@@ -1927,9 +1929,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Text
@@ -2053,9 +2055,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Helpers
@@ -2174,9 +2176,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Name
@@ -2266,9 +2268,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Web
@@ -2347,9 +2349,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Address
@@ -2399,9 +2401,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // state: function() {},
 	}
 
-/***/ },
+/***/ }),
 /* 18 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Address 字典数据
@@ -6472,9 +6474,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = DICT_FIXED
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Miscellaneous
@@ -6582,9 +6584,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var Parser = __webpack_require__(21)
 	var Handler = __webpack_require__(22)
@@ -6593,9 +6595,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		Handler: Handler
 	}
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// https://github.com/nuysoft/regexp
 	// forked from https://github.com/ForbesLindesay/regexp
@@ -7168,9 +7170,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = parser
 
-/***/ },
+/***/ }),
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## RegExp Handler
@@ -7565,15 +7567,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Handler
 
-/***/ },
+/***/ }),
 /* 23 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(24)
 
-/***/ },
+/***/ }),
 /* 24 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## toJSONSchema
@@ -7624,15 +7626,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toJSONSchema
 
 
-/***/ },
+/***/ }),
 /* 25 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(26)
 
-/***/ },
+/***/ }),
 /* 26 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## valid(template, data)
@@ -8080,15 +8082,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = valid
 
-/***/ },
+/***/ }),
 /* 27 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(28)
 
-/***/ },
+/***/ }),
 /* 28 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* global window, document, location, Event, setTimeout */
 	/*
@@ -8533,7 +8535,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = MockXMLHttpRequest
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
