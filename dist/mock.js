@@ -58,12 +58,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Handler = __webpack_require__(1)
 	var Util = __webpack_require__(3)
 	var Random = __webpack_require__(5)
-	var RE = __webpack_require__(20)
-	var toJSONSchema = __webpack_require__(23)
-	var valid = __webpack_require__(25)
+	var RE = __webpack_require__(45)
+	var toJSONSchema = __webpack_require__(48)
+	var valid = __webpack_require__(50)
 
 	var XHR
-	if (typeof window !== 'undefined') XHR = __webpack_require__(27)
+	if (typeof window !== 'undefined') XHR = __webpack_require__(52)
 
 	/*!
 	    Mock - 模拟请求 & 模拟数据
@@ -163,7 +163,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Util = __webpack_require__(3)
 	var Parser = __webpack_require__(4)
 	var Random = __webpack_require__(5)
-	var RE = __webpack_require__(20)
+	var RE = __webpack_require__(45)
 
 	var Handler = {
 	    extend: Util.extend
@@ -929,26 +929,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	Random.extend(__webpack_require__(6))
-	Random.extend(__webpack_require__(7))
-	Random.extend(__webpack_require__(8))
-	Random.extend(__webpack_require__(10))
-	Random.extend(__webpack_require__(13))
-	Random.extend(__webpack_require__(15))
-	Random.extend(__webpack_require__(16))
-	Random.extend(__webpack_require__(17))
-	Random.extend(__webpack_require__(14))
-	Random.extend(__webpack_require__(19))
+	Random.extend(__webpack_require__(32))
+	Random.extend(__webpack_require__(33))
+	Random.extend(__webpack_require__(35))
+	Random.extend(__webpack_require__(38))
+	Random.extend(__webpack_require__(40))
+	Random.extend(__webpack_require__(41))
+	Random.extend(__webpack_require__(42))
+	Random.extend(__webpack_require__(39))
+	Random.extend(__webpack_require__(44))
 
 	module.exports = Random
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Basics
 	*/
-	import random from "random"
+	var random  = __webpack_require__(7);
 	module.exports = {
 	    // 返回一个随机的布尔值。
 	    boolean: function(min, max, cur) {
@@ -1076,6 +1076,1549 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict'
+
+	module.exports = __webpack_require__(8).default
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	var _rng2 = __webpack_require__(14);
+
+	var _rng3 = _interopRequireDefault(_rng2);
+
+	var _rngFactory = __webpack_require__(15);
+
+	var _rngFactory2 = _interopRequireDefault(_rngFactory);
+
+	var _uniform2 = __webpack_require__(19);
+
+	var _uniform3 = _interopRequireDefault(_uniform2);
+
+	var _uniformInt2 = __webpack_require__(20);
+
+	var _uniformInt3 = _interopRequireDefault(_uniformInt2);
+
+	var _uniformBoolean2 = __webpack_require__(21);
+
+	var _uniformBoolean3 = _interopRequireDefault(_uniformBoolean2);
+
+	var _normal2 = __webpack_require__(22);
+
+	var _normal3 = _interopRequireDefault(_normal2);
+
+	var _logNormal2 = __webpack_require__(23);
+
+	var _logNormal3 = _interopRequireDefault(_logNormal2);
+
+	var _bernoulli2 = __webpack_require__(24);
+
+	var _bernoulli3 = _interopRequireDefault(_bernoulli2);
+
+	var _binomial2 = __webpack_require__(25);
+
+	var _binomial3 = _interopRequireDefault(_binomial2);
+
+	var _geometric2 = __webpack_require__(26);
+
+	var _geometric3 = _interopRequireDefault(_geometric2);
+
+	var _poisson2 = __webpack_require__(27);
+
+	var _poisson3 = _interopRequireDefault(_poisson2);
+
+	var _exponential2 = __webpack_require__(28);
+
+	var _exponential3 = _interopRequireDefault(_exponential2);
+
+	var _irwinHall2 = __webpack_require__(29);
+
+	var _irwinHall3 = _interopRequireDefault(_irwinHall2);
+
+	var _bates2 = __webpack_require__(30);
+
+	var _bates3 = _interopRequireDefault(_bates2);
+
+	var _pareto2 = __webpack_require__(31);
+
+	var _pareto3 = _interopRequireDefault(_pareto2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * Seedable random number generator supporting many common distributions.
+	 *
+	 * Defaults to Math.random as its underlying pseudorandom number generator.
+	 *
+	 * @name Random
+	 * @class
+	 *
+	 * @param {RNG|function} [rng=Math.random] - Underlying pseudorandom number generator.
+	 */
+	var Random = function () {
+	  function Random(rng) {
+	    _classCallCheck(this, Random);
+
+	    if (rng) (0, _owLite2.default)(rng, _owLite2.default.object.instanceOf(_rng3.default));
+
+	    this._cache = {};
+	    this.use(rng);
+	  }
+
+	  /**
+	   * @member {RNG} Underlying pseudo-random number generator
+	   */
+
+
+	  _createClass(Random, [{
+	    key: 'clone',
+
+
+	    /**
+	     * Creates a new `Random` instance, optionally specifying parameters to
+	     * set a new seed.
+	     *
+	     * @see RNG.clone
+	     *
+	     * @param {string} [seed] - Optional seed for new RNG.
+	     * @param {object} [opts] - Optional config for new RNG options.
+	     * @return {Random}
+	     */
+	    value: function clone() {
+	      var _rng;
+
+	      return new Random((_rng = this.rng).clone.apply(_rng, arguments));
+	    }
+
+	    /**
+	     * Sets the underlying pseudorandom number generator used via
+	     * either an instance of `seedrandom`, a custom instance of RNG
+	     * (for PRNG plugins), or a string specifying the PRNG to use
+	     * along with an optional `seed` and `opts` to initialize the
+	     * RNG.
+	     *
+	     * @example
+	     * const random = require('random')
+	     *
+	     * random.use('xor128', 'foobar')
+	     * // or
+	     * random.use(seedrandom('kittens'))
+	     * // or
+	     * random.use(Math.random)
+	     *
+	     * @param {...*} args
+	     */
+
+	  }, {
+	    key: 'use',
+	    value: function use() {
+	      this._rng = _rngFactory2.default.apply(undefined, arguments);
+	    }
+
+	    /**
+	     * Patches `Math.random` with this Random instance's PRNG.
+	     */
+
+	  }, {
+	    key: 'patch',
+	    value: function patch() {
+	      if (this._patch) {
+	        throw new Error('Math.random already patched');
+	      }
+
+	      this._patch = Math.random;
+	      Math.random = this.uniform();
+	    }
+
+	    /**
+	     * Restores a previously patched `Math.random` to its original value.
+	     */
+
+	  }, {
+	    key: 'unpatch',
+	    value: function unpatch() {
+	      if (this._patch) {
+	        Math.random = this._patch;
+	        delete this._patch;
+	      }
+	    }
+
+	    // --------------------------------------------------------------------------
+	    // Uniform utility functions
+	    // --------------------------------------------------------------------------
+
+	    /**
+	     * Convenience wrapper around `this.rng.next()`
+	     *
+	     * Returns a floating point number in [0, 1).
+	     *
+	     * @return {number}
+	     */
+
+	  }, {
+	    key: 'next',
+	    value: function next() {
+	      return this._rng.next();
+	    }
+
+	    /**
+	     * Samples a uniform random floating point number, optionally specifying
+	     * lower and upper bounds.
+	     *
+	     * Convence wrapper around `random.uniform()`
+	     *
+	     * @param {number} [min=0] - Lower bound (float, inclusive)
+	     * @param {number} [max=1] - Upper bound (float, exclusive)
+	     * @return {number}
+	     */
+
+	  }, {
+	    key: 'float',
+	    value: function float(min, max) {
+	      return this.uniform(min, max)();
+	    }
+
+	    /**
+	     * Samples a uniform random integer, optionally specifying lower and upper
+	     * bounds.
+	     *
+	     * Convence wrapper around `random.uniformInt()`
+	     *
+	     * @param {number} [min=0] - Lower bound (integer, inclusive)
+	     * @param {number} [max=1] - Upper bound (integer, inclusive)
+	     * @return {number}
+	     */
+
+	  }, {
+	    key: 'int',
+	    value: function int(min, max) {
+	      return this.uniformInt(min, max)();
+	    }
+
+	    /**
+	     * Samples a uniform random integer, optionally specifying lower and upper
+	     * bounds.
+	     *
+	     * Convence wrapper around `random.uniformInt()`
+	     *
+	     * @alias `random.int`
+	     *
+	     * @param {number} [min=0] - Lower bound (integer, inclusive)
+	     * @param {number} [max=1] - Upper bound (integer, inclusive)
+	     * @return {number}
+	     */
+
+	  }, {
+	    key: 'integer',
+	    value: function integer(min, max) {
+	      return this.uniformInt(min, max)();
+	    }
+
+	    /**
+	     * Samples a uniform random boolean value.
+	     *
+	     * Convence wrapper around `random.uniformBoolean()`
+	     *
+	     * @alias `random.boolean`
+	     *
+	     * @return {boolean}
+	     */
+
+	  }, {
+	    key: 'bool',
+	    value: function bool() {
+	      return this.uniformBoolean()();
+	    }
+
+	    /**
+	     * Samples a uniform random boolean value.
+	     *
+	     * Convence wrapper around `random.uniformBoolean()`
+	     *
+	     * @return {boolean}
+	     */
+
+	  }, {
+	    key: 'boolean',
+	    value: function boolean() {
+	      return this.uniformBoolean()();
+	    }
+
+	    // --------------------------------------------------------------------------
+	    // Uniform distributions
+	    // --------------------------------------------------------------------------
+
+	    /**
+	     * Generates a [Continuous uniform distribution](https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)).
+	     *
+	     * @param {number} [min=0] - Lower bound (float, inclusive)
+	     * @param {number} [max=1] - Upper bound (float, exclusive)
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'uniform',
+	    value: function uniform(min, max) {
+	      return this._memoize('uniform', _uniform3.default, min, max);
+	    }
+
+	    /**
+	     * Generates a [Discrete uniform distribution](https://en.wikipedia.org/wiki/Discrete_uniform_distribution).
+	     *
+	     * @param {number} [min=0] - Lower bound (integer, inclusive)
+	     * @param {number} [max=1] - Upper bound (integer, inclusive)
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'uniformInt',
+	    value: function uniformInt(min, max) {
+	      return this._memoize('uniformInt', _uniformInt3.default, min, max);
+	    }
+
+	    /**
+	     * Generates a [Discrete uniform distribution](https://en.wikipedia.org/wiki/Discrete_uniform_distribution),
+	     * with two possible outcomes, `true` or `false.
+	     *
+	     * This method is analogous to flipping a coin.
+	     *
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'uniformBoolean',
+	    value: function uniformBoolean() {
+	      return this._memoize('uniformBoolean', _uniformBoolean3.default);
+	    }
+
+	    // --------------------------------------------------------------------------
+	    // Normal distributions
+	    // --------------------------------------------------------------------------
+
+	    /**
+	     * Generates a [Normal distribution](https://en.wikipedia.org/wiki/Normal_distribution).
+	     *
+	     * @param {number} [mu=0] - Mean
+	     * @param {number} [sigma=1] - Standard deviation
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'normal',
+	    value: function normal(mu, sigma) {
+	      return (0, _normal3.default)(this, mu, sigma);
+	    }
+
+	    /**
+	     * Generates a [Log-normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution).
+	     *
+	     * @param {number} [mu=0] - Mean of underlying normal distribution
+	     * @param {number} [sigma=1] - Standard deviation of underlying normal distribution
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'logNormal',
+	    value: function logNormal(mu, sigma) {
+	      return (0, _logNormal3.default)(this, mu, sigma);
+	    }
+
+	    // --------------------------------------------------------------------------
+	    // Bernoulli distributions
+	    // --------------------------------------------------------------------------
+
+	    /**
+	     * Generates a [Bernoulli distribution](https://en.wikipedia.org/wiki/Bernoulli_distribution).
+	     *
+	     * @param {number} [p=0.5] - Success probability of each trial.
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'bernoulli',
+	    value: function bernoulli(p) {
+	      return (0, _bernoulli3.default)(this, p);
+	    }
+
+	    /**
+	     * Generates a [Binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution).
+	     *
+	     * @param {number} [n=1] - Number of trials.
+	     * @param {number} [p=0.5] - Success probability of each trial.
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'binomial',
+	    value: function binomial(n, p) {
+	      return (0, _binomial3.default)(this, n, p);
+	    }
+
+	    /**
+	     * Generates a [Geometric distribution](https://en.wikipedia.org/wiki/Geometric_distribution).
+	     *
+	     * @param {number} [p=0.5] - Success probability of each trial.
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'geometric',
+	    value: function geometric(p) {
+	      return (0, _geometric3.default)(this, p);
+	    }
+
+	    // --------------------------------------------------------------------------
+	    // Poisson distributions
+	    // --------------------------------------------------------------------------
+
+	    /**
+	     * Generates a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution).
+	     *
+	     * @param {number} [lambda=1] - Mean (lambda > 0)
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'poisson',
+	    value: function poisson(lambda) {
+	      return (0, _poisson3.default)(this, lambda);
+	    }
+
+	    /**
+	     * Generates an [Exponential distribution](https://en.wikipedia.org/wiki/Exponential_distribution).
+	     *
+	     * @param {number} [lambda=1] - Inverse mean (lambda > 0)
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'exponential',
+	    value: function exponential(lambda) {
+	      return (0, _exponential3.default)(this, lambda);
+	    }
+
+	    // --------------------------------------------------------------------------
+	    // Misc distributions
+	    // --------------------------------------------------------------------------
+
+	    /**
+	     * Generates an [Irwin Hall distribution](https://en.wikipedia.org/wiki/Irwin%E2%80%93Hall_distribution).
+	     *
+	     * @param {number} [n=1] - Number of uniform samples to sum (n >= 0)
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'irwinHall',
+	    value: function irwinHall(n) {
+	      return (0, _irwinHall3.default)(this, n);
+	    }
+
+	    /**
+	     * Generates a [Bates distribution](https://en.wikipedia.org/wiki/Bates_distribution).
+	     *
+	     * @param {number} [n=1] - Number of uniform samples to average (n >= 1)
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'bates',
+	    value: function bates(n) {
+	      return (0, _bates3.default)(this, n);
+	    }
+
+	    /**
+	     * Generates a [Pareto distribution](https://en.wikipedia.org/wiki/Pareto_distribution).
+	     *
+	     * @param {number} [alpha=1] - Alpha
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: 'pareto',
+	    value: function pareto(alpha) {
+	      return (0, _pareto3.default)(this, alpha);
+	    }
+
+	    // --------------------------------------------------------------------------
+	    // Internal
+	    // --------------------------------------------------------------------------
+
+	    /**
+	     * Memoizes distributions to ensure they're only created when necessary.
+	     *
+	     * Returns a thunk which that returns independent, identically distributed
+	     * samples from the specified distribution.
+	     *
+	     * @private
+	     *
+	     * @param {string} label - Name of distribution
+	     * @param {function} getter - Function which generates a new distribution
+	     * @param {...*} args - Distribution-specific arguments
+	     *
+	     * @return {function}
+	     */
+
+	  }, {
+	    key: '_memoize',
+	    value: function _memoize(label, getter) {
+	      for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+	        args[_key - 2] = arguments[_key];
+	      }
+
+	      var key = '' + args.join(';');
+	      var value = this._cache[label];
+
+	      if (value === undefined || value.key !== key) {
+	        value = { key: key, distribution: getter.apply(undefined, [this].concat(args)) };
+	        this._cache[label] = value;
+	      }
+
+	      return value.distribution;
+	    }
+	  }, {
+	    key: 'rng',
+	    get: function get() {
+	      return this._rng;
+	    }
+	  }]);
+
+	  return Random;
+	}();
+
+	// defaults to Math.random as its RNG
+
+
+	exports.default = new Random();
+	//# sourceMappingURL=random.js.map
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict'
+
+	const symbols = __webpack_require__(10)
+	const number = __webpack_require__(11)
+	const string = __webpack_require__(12)
+	const object = __webpack_require__(13)
+
+	const typePredicates = {
+	  number,
+	  string,
+	  object
+	}
+
+	const createOw = ({
+	  validators = [],
+	  predicates = typePredicates,
+	  type = null
+	} = { }) => {
+	  const ow = new Proxy(function () { }, {
+	    get: (obj, key) => {
+	      if (key === symbols.validate) {
+	        return (value, label = 'argument') => {
+	          if (!type) {
+	            return new Error('missing required type specifier')
+	          }
+
+	          for (let i = 0; i < validators.length; ++i) {
+	            const validator = validators[i]
+	            const result = validator.fn(value)
+
+	            if (!result) {
+	              if (i === 0) {
+	                throw new Error(`Expected ${label} \`${value}\` to be of type \`${type}\`, but received type \`${typeof value}\``)
+	              } else {
+	                throw new Error(`Expected ${type} \`${label}\` \`${value}\` failed predicate \`${validator.key}\``)
+	              }
+	            }
+	          }
+	        }
+	      }
+
+	      const predicate = predicates[key]
+
+	      if (predicate) {
+	        if (typeof predicate === 'function') {
+	          validators.push({
+	            key,
+	            fn: predicate
+	          })
+
+	          return ow
+	        } else {
+	          return createOw({
+	            type: key,
+	            validators: [
+	              {
+	                key,
+	                fn: predicate.validator
+	              }
+	            ],
+	            predicates: predicate.predicates
+	          })
+	        }
+	      } else {
+	        const fn = predicates[symbols.func] && predicates[symbols.func][key]
+
+	        if (fn) {
+	          return new Proxy(function () { }, {
+	            get: () => {
+	              throw new Error(`invalid use of functional predicate "${key}"`)
+	            },
+
+	            apply: (obj, thisArg, args) => {
+	              validators.push({
+	                key,
+	                fn: fn(...args)
+	              })
+
+	              return ow
+	            }
+	          })
+	        } else {
+	          if (key === 'default' || key === '__esModule') {
+	            return ow
+	          }
+
+	          return ow
+	          // throw new Error(`unrecognized predicate "${key}"`)
+	        }
+	      }
+	    },
+
+	    apply: (obj, thisArg, args) => {
+	      if (args.length !== 2 && args.length !== 3) {
+	        throw new Error('invalid number of arguments to "ow"')
+	      } else {
+	        args[1][symbols.validate](args[0], args[2])
+	      }
+	    }
+	  })
+
+	  return ow
+	}
+
+	module.exports = createOw()
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+	'use strict'
+
+	exports.func = Symbol('func')
+	exports.validate = Symbol('validate')
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict'
+
+	const { func } = __webpack_require__(10)
+
+	const numberPredicates = {
+	  positive: (value) => (value > 0),
+	  negative: (value) => (value < 0),
+	  nonNegative: (value) => (value >= 0),
+	  integer: (value) => (value === (value | 0)),
+
+	  [func]: {
+	    is: (fn) => fn,
+	    eq: (v) => (value) => (value === v),
+	    gt: (v) => (value) => (value > v),
+	    gte: (v) => (value) => (value >= v),
+	    lt: (v) => (value) => (value < v),
+	    lte: (v) => (value) => (value <= v)
+	  }
+	}
+
+	module.exports = {
+	  predicates: numberPredicates,
+	  validator: (value) => {
+	    return typeof value === 'number'
+	  }
+	}
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict'
+
+	const { func } = __webpack_require__(10)
+
+	const stringPredicates = {
+	  empty: (value) => (value === ''),
+	  nonEmpty: (value) => (value !== ''),
+
+	  [func]: {
+	    is: (fn) => fn,
+	    eq: (v) => (value) => (value === v),
+	    length: (v) => (value) => (value.length === v),
+	    minLength: (v) => (value) => (value.length >= v),
+	    maxLength: (v) => (value) => (value.length <= v),
+	    matches: (v) => (value) => v.test(value),
+	    startsWith: (v) => (value) => value.startsWith(v),
+	    endsWith: (v) => (value) => value.endsWith(v)
+	  }
+	}
+
+	module.exports = {
+	  predicates: stringPredicates,
+	  validator: (value) => {
+	    return typeof value === 'string'
+	  }
+	}
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict'
+
+	const { func } = __webpack_require__(10)
+
+	const objectPredicates = {
+	  plain: (value) => {
+	    if (typeof value !== 'object') return false
+
+	    const proto = Object.getPrototypeOf(value)
+	    return proto === null || proto === Object.getPrototypeOf({})
+	  },
+	  empty: (value) => Object.keys(value).length === 0,
+	  nonEmpty: (value) => Object.keys(value).length > 0,
+
+	  [func]: {
+	    is: (fn) => fn,
+	    instanceOf: (v) => (value) => (value instanceof v)
+	  }
+	}
+
+	module.exports = {
+	  predicates: objectPredicates,
+	  validator: (value) => {
+	    return typeof value === 'object'
+	  }
+	}
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var RNG = function () {
+	  function RNG() {
+	    _classCallCheck(this, RNG);
+	  }
+
+	  _createClass(RNG, [{
+	    key: 'next',
+	    value: function next() {
+	      throw new Error('RNG.next must be overridden');
+	    }
+	  }, {
+	    key: 'seed',
+	    value: function seed(_seed, opts) {
+	      throw new Error('RNG.seed must be overridden');
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone(seed, opts) {
+	      throw new Error('RNG.clone must be overridden');
+	    }
+	  }, {
+	    key: '_seed',
+	    value: function _seed(seed, opts) {
+	      // TODO: add entropy and stuff
+
+	      if (seed === (seed | 0)) {
+	        return seed;
+	      } else {
+	        var strSeed = '' + seed;
+	        var s = 0;
+
+	        for (var k = 0; k < strSeed.length; ++k) {
+	          s ^= strSeed.charCodeAt(k) | 0;
+	        }
+
+	        return s;
+	      }
+	    }
+	  }, {
+	    key: 'name',
+	    get: function get() {
+	      throw new Error('RNG.name must be overridden');
+	    }
+	  }]);
+
+	  return RNG;
+	}();
+
+	exports.default = RNG;
+	//# sourceMappingURL=rng.js.map
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	var _rng = __webpack_require__(14);
+
+	var _rng2 = _interopRequireDefault(_rng);
+
+	var _xor = __webpack_require__(16);
+
+	var _xor2 = _interopRequireDefault(_xor);
+
+	var _function = __webpack_require__(17);
+
+	var _function2 = _interopRequireDefault(_function);
+
+	var _mathRandom = __webpack_require__(18);
+
+	var _mathRandom2 = _interopRequireDefault(_mathRandom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	var PRNG_BUILTINS = {
+	  // TODO: add more prng from C++11 lib
+	  'xor128': _xor2.default,
+	  'function': _function2.default,
+	  'default': _mathRandom2.default
+	};
+
+	exports.default = function () {
+	  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	    args[_key] = arguments[_key];
+	  }
+
+	  var _args$ = args[0],
+	      arg0 = _args$ === undefined ? 'default' : _args$,
+	      rest = args.slice(1);
+
+
+	  switch (typeof arg0 === 'undefined' ? 'undefined' : _typeof(arg0)) {
+	    case 'object':
+	      if (arg0 instanceof _rng2.default) {
+	        return arg0;
+	      }
+	      break;
+
+	    case 'function':
+	      return new _function2.default(arg0);
+
+	    case 'string':
+	      var PRNG = PRNG_BUILTINS[arg0];
+	      if (PRNG) {
+	        return new (Function.prototype.bind.apply(PRNG, [null].concat(_toConsumableArray(rest))))();
+	      }
+	      break;
+	  }
+
+	  throw new Error('invalid RNG "' + arg0 + '"');
+	};
+	//# sourceMappingURL=rng-factory.js.map
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _rng = __webpack_require__(14);
+
+	var _rng2 = _interopRequireDefault(_rng);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RNGXOR128 = function (_RNG) {
+	  _inherits(RNGXOR128, _RNG);
+
+	  function RNGXOR128(seed, opts) {
+	    _classCallCheck(this, RNGXOR128);
+
+	    var _this = _possibleConstructorReturn(this, (RNGXOR128.__proto__ || Object.getPrototypeOf(RNGXOR128)).call(this));
+
+	    _this.x = 0;
+	    _this.y = 0;
+	    _this.z = 0;
+	    _this.w = 0;
+
+	    _this.seed(seed, opts);
+	    return _this;
+	  }
+
+	  _createClass(RNGXOR128, [{
+	    key: 'next',
+	    value: function next() {
+	      var t = this.x ^ this.x << 1;
+	      this.x = this.y;
+	      this.y = this.z;
+	      this.z = this.w;
+	      this.w = this.w ^ (this.w >>> 19 ^ t ^ t >>> 8);
+	      return (this.w >>> 0) / 0x100000000;
+	    }
+	  }, {
+	    key: 'seed',
+	    value: function seed(_seed, opts) {
+	      // this._rng = seedrandom(this._seed(seed, opts))
+
+	      this.x = this._seed(_seed, opts);
+
+	      // discard an initial batch of 64 values
+	      for (var i = 0; i < 64; ++i) {
+	        this.next();
+	      }
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone(seed, opts) {
+	      return new RNGXOR128(seed, opts);
+	    }
+	  }, {
+	    key: 'name',
+	    get: function get() {
+	      return 'xor128';
+	    }
+	  }]);
+
+	  return RNGXOR128;
+	}(_rng2.default);
+
+	exports.default = RNGXOR128;
+	//# sourceMappingURL=xor128.js.map
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	var _rng = __webpack_require__(14);
+
+	var _rng2 = _interopRequireDefault(_rng);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RNGFunction = function (_RNG) {
+	  _inherits(RNGFunction, _RNG);
+
+	  function RNGFunction(seed, opts) {
+	    _classCallCheck(this, RNGFunction);
+
+	    var _this = _possibleConstructorReturn(this, (RNGFunction.__proto__ || Object.getPrototypeOf(RNGFunction)).call(this));
+
+	    _this.seed(seed, opts);
+	    return _this;
+	  }
+
+	  _createClass(RNGFunction, [{
+	    key: 'next',
+	    value: function next() {
+	      return this._rng();
+	    }
+	  }, {
+	    key: 'seed',
+	    value: function seed(_seed) {
+	      (0, _owLite2.default)(_seed, _owLite2.default.function);
+	      this._rng = _seed;
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone(seed, opts) {
+	      return new RNGFunction(seed, opts);
+	    }
+	  }, {
+	    key: 'name',
+	    get: function get() {
+	      return 'function';
+	    }
+	  }]);
+
+	  return RNGFunction;
+	}(_rng2.default);
+
+	exports.default = RNGFunction;
+	//# sourceMappingURL=function.js.map
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _rng = __webpack_require__(14);
+
+	var _rng2 = _interopRequireDefault(_rng);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RNGMathRandom = function (_RNG) {
+	  _inherits(RNGMathRandom, _RNG);
+
+	  function RNGMathRandom() {
+	    _classCallCheck(this, RNGMathRandom);
+
+	    return _possibleConstructorReturn(this, (RNGMathRandom.__proto__ || Object.getPrototypeOf(RNGMathRandom)).apply(this, arguments));
+	  }
+
+	  _createClass(RNGMathRandom, [{
+	    key: 'next',
+	    value: function next() {
+	      return Math.random();
+	    }
+	  }, {
+	    key: 'seed',
+	    value: function seed(_seed, opts) {
+	      // intentionally empty
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new RNGMathRandom();
+	    }
+	  }, {
+	    key: 'name',
+	    get: function get() {
+	      return 'default';
+	    }
+	  }]);
+
+	  return RNGMathRandom;
+	}(_rng2.default);
+
+	exports.default = RNGMathRandom;
+	//# sourceMappingURL=math-random.js.map
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random, min, max) {
+	  if (max === undefined) {
+	    max = min === undefined ? 1 : min;
+	    min = 0;
+	  }
+
+	  (0, _owLite2.default)(min, _owLite2.default.number);
+	  (0, _owLite2.default)(max, _owLite2.default.number);
+
+	  return function () {
+	    return random.next() * (max - min) + min;
+	  };
+	};
+	//# sourceMappingURL=uniform.js.map
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random, min, max) {
+	  if (max === undefined) {
+	    max = min === undefined ? 1 : min;
+	    min = 0;
+	  }
+
+	  (0, _owLite2.default)(min, _owLite2.default.number.integer);
+	  (0, _owLite2.default)(max, _owLite2.default.number.integer);
+
+	  return function () {
+	    return random.next() * (max - min + 1) + min | 0;
+	  };
+	};
+	//# sourceMappingURL=uniform-int.js.map
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (random) {
+	  return function () {
+	    return random.next() >= 0.5;
+	  };
+	};
+	//# sourceMappingURL=uniform-boolean.js.map
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random) {
+	  var mu = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+	  var sigma = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+
+	  (0, _owLite2.default)(mu, _owLite2.default.number);
+	  (0, _owLite2.default)(sigma, _owLite2.default.number);
+
+	  return function () {
+	    var x = void 0,
+	        y = void 0,
+	        r = void 0;
+
+	    do {
+	      x = random.next() * 2 - 1;
+	      y = random.next() * 2 - 1;
+	      r = x * x + y * y;
+	    } while (!r || r > 1);
+
+	    return mu + sigma * y * Math.sqrt(-2 * Math.log(r) / r);
+	  };
+	};
+	//# sourceMappingURL=normal.js.map
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (random) {
+	  for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	    args[_key - 1] = arguments[_key];
+	  }
+
+	  var normal = random.normal.apply(random, args);
+
+	  return function () {
+	    return Math.exp(normal());
+	  };
+	};
+	//# sourceMappingURL=log-normal.js.map
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random) {
+	  var p = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
+
+	  (0, _owLite2.default)(p, _owLite2.default.number.gte(0).lt(1));
+
+	  return function () {
+	    return random.next() + p | 0;
+	  };
+	};
+	//# sourceMappingURL=bernoulli.js.map
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random) {
+	  var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+	  var p = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.5;
+
+	  (0, _owLite2.default)(n, _owLite2.default.number.positive.integer);
+	  (0, _owLite2.default)(p, _owLite2.default.number.gte(0).lte(1));
+
+	  return function () {
+	    var i = 0;
+	    var x = 0;
+
+	    while (i++ < n) {
+	      x += random.next() < p;
+	    }
+
+	    return x;
+	  };
+	};
+	//# sourceMappingURL=binomial.js.map
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random) {
+	  var p = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
+
+	  (0, _owLite2.default)(p, _owLite2.default.number.gt(0).lte(1));
+	  var invLogP = 1.0 / Math.log(1.0 - p);
+
+	  return function () {
+	    return 1 + Math.log(random.next()) * invLogP | 0;
+	  };
+	};
+	//# sourceMappingURL=geometric.js.map
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var logFactorialTable = [0.0, 0.0, 0.69314718055994529, 1.7917594692280550, 3.1780538303479458, 4.7874917427820458, 6.5792512120101012, 8.5251613610654147, 10.604602902745251, 12.801827480081469];
+
+	var logFactorial = function logFactorial(k) {
+	  return logFactorialTable[k];
+	};
+
+	var logSqrt2PI = 0.91893853320467267;
+
+	exports.default = function (random) {
+	  var lambda = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+	  (0, _owLite2.default)(lambda, _owLite2.default.number.positive);
+
+	  if (lambda < 10) {
+	    // inversion method
+	    var expMean = Math.exp(-lambda);
+
+	    return function () {
+	      var p = expMean;
+	      var x = 0;
+	      var u = random.next();
+
+	      while (u > p) {
+	        u = u - p;
+	        p = lambda * p / ++x;
+	      }
+
+	      return x;
+	    };
+	  } else {
+	    // generative method
+	    var smu = Math.sqrt(lambda);
+	    var b = 0.931 + 2.53 * smu;
+	    var a = -0.059 + 0.02483 * b;
+	    var invAlpha = 1.1239 + 1.1328 / (b - 3.4);
+	    var vR = 0.9277 - 3.6224 / (b - 2);
+
+	    return function () {
+	      while (true) {
+	        var u = void 0;
+	        var v = random.next();
+
+	        if (v <= 0.86 * vR) {
+	          u = v / vR - 0.43;
+	          return Math.floor((2 * a / (0.5 - Math.abs(u)) + b) * u + lambda + 0.445);
+	        }
+
+	        if (v >= vR) {
+	          u = random.next() - 0.5;
+	        } else {
+	          u = v / vR - 0.93;
+	          u = (u < 0 ? -0.5 : 0.5) - u;
+	          v = random.next() * vR;
+	        }
+
+	        var us = 0.5 - Math.abs(u);
+	        if (us < 0.013 && v > us) {
+	          continue;
+	        }
+
+	        var k = Math.floor((2 * a / us + b) * u + lambda + 0.445) | 0;
+	        v = v * invAlpha / (a / (us * us) + b);
+
+	        if (k >= 10) {
+	          var t = (k + 0.5) * Math.log(lambda / k) - lambda - logSqrt2PI + k - (1 / 12.0 - (1 / 360.0 - 1 / (1260.0 * k * k)) / (k * k)) / k;
+
+	          if (Math.log(v * smu) <= t) {
+	            return k;
+	          }
+	        } else if (k >= 0) {
+	          if (Math.log(v) <= k * Math.log(lambda) - lambda - logFactorial(k)) {
+	            return k;
+	          }
+	        }
+	      }
+	    };
+	  }
+	};
+	//# sourceMappingURL=poisson.js.map
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random) {
+	  var lambda = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+	  (0, _owLite2.default)(lambda, _owLite2.default.number.positive);
+
+	  return function () {
+	    return -Math.log(1 - random.next()) / lambda;
+	  };
+	};
+	//# sourceMappingURL=exponential.js.map
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random) {
+	  var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+	  (0, _owLite2.default)(n, _owLite2.default.number.integer.gte(0));
+
+	  return function () {
+	    var sum = 0;
+	    for (var i = 0; i < n; ++i) {
+	      sum += random.next();
+	    }
+
+	    return sum;
+	  };
+	};
+	//# sourceMappingURL=irwin-hall.js.map
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random) {
+	  var n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+	  (0, _owLite2.default)(n, _owLite2.default.number.integer.positive);
+	  var irwinHall = random.irwinHall(n);
+
+	  return function () {
+	    return irwinHall() / n;
+	  };
+	};
+	//# sourceMappingURL=bates.js.map
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _owLite = __webpack_require__(9);
+
+	var _owLite2 = _interopRequireDefault(_owLite);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (random) {
+	  var alpha = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+	  (0, _owLite2.default)(alpha, _owLite2.default.number.gte(0));
+	  var invAlpha = 1.0 / alpha;
+
+	  return function () {
+	    return 1.0 / Math.pow(1.0 - random.next(), invAlpha);
+	  };
+	};
+	//# sourceMappingURL=pareto.js.map
+
+/***/ }),
+/* 32 */
 /***/ (function(module, exports) {
 
 	/*
@@ -1221,7 +2764,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 8 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* global document  */
@@ -1506,10 +3049,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return canvas.toDataURL('image/png')
 	    }
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34)(module)))
 
 /***/ }),
-/* 9 */
+/* 34 */
 /***/ (function(module, exports) {
 
 	module.exports = function(module) {
@@ -1525,7 +3068,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 10 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -1602,8 +3145,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return color.toUpperCase()
 	*/
 
-	var Convert = __webpack_require__(11)
-	var DICT = __webpack_require__(12)
+	var Convert = __webpack_require__(36)
+	var DICT = __webpack_require__(37)
 
 	module.exports = {
 	    // 随机生成一个有吸引力的颜色，格式为 '#RRGGBB'。
@@ -1667,7 +3210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 11 */
+/* 36 */
 /***/ (function(module, exports) {
 
 	/*
@@ -1849,7 +3392,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 12 */
+/* 37 */
 /***/ (function(module, exports) {
 
 	/*
@@ -1930,7 +3473,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 13 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -1939,7 +3482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    http://www.lipsum.com/
 	*/
 	var Basic = __webpack_require__(6)
-	var Helper = __webpack_require__(14)
+	var Helper = __webpack_require__(39)
 
 	function range(defaultMin, defaultMax, min, max) {
 	    return min === undefined ? Basic.natural(defaultMin, defaultMax) : // ()
@@ -2056,7 +3599,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 14 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -2177,7 +3720,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 15 */
+/* 40 */
 /***/ (function(module, exports) {
 
 	/*
@@ -2269,7 +3812,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 16 */
+/* 41 */
 /***/ (function(module, exports) {
 
 	/*
@@ -2350,14 +3893,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 17 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Address
 	*/
 
-	var DICT = __webpack_require__(18)
+	var DICT = __webpack_require__(43)
 	var REGION = ['东北', '华北', '华东', '华中', '华南', '西南', '西北']
 
 	module.exports = {
@@ -2402,7 +3945,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 18 */
+/* 43 */
 /***/ (function(module, exports) {
 
 	/*
@@ -6475,13 +8018,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = DICT_FIXED
 
 /***/ }),
-/* 19 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Miscellaneous
 	*/
-	var DICT = __webpack_require__(18)
+	var DICT = __webpack_require__(43)
 	module.exports = {
 		// Dice
 		d4: function() {
@@ -6585,18 +8128,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ }),
-/* 20 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Parser = __webpack_require__(21)
-	var Handler = __webpack_require__(22)
+	var Parser = __webpack_require__(46)
+	var Handler = __webpack_require__(47)
 	module.exports = {
 		Parser: Parser,
 		Handler: Handler
 	}
 
 /***/ }),
-/* 21 */
+/* 46 */
 /***/ (function(module, exports) {
 
 	// https://github.com/nuysoft/regexp
@@ -7171,7 +8714,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = parser
 
 /***/ }),
-/* 22 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -7568,13 +9111,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Handler
 
 /***/ }),
-/* 23 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(24)
+	module.exports = __webpack_require__(49)
 
 /***/ }),
-/* 24 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -7627,13 +9170,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 25 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(26)
+	module.exports = __webpack_require__(51)
 
 /***/ }),
-/* 26 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -7660,7 +9203,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 	var Constant = __webpack_require__(2)
 	var Util = __webpack_require__(3)
-	var toJSONSchema = __webpack_require__(23)
+	var toJSONSchema = __webpack_require__(48)
 
 	function valid(template, data) {
 	    var schema = toJSONSchema(template)
@@ -8083,13 +9626,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = valid
 
 /***/ }),
-/* 27 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(28)
+	module.exports = __webpack_require__(53)
 
 /***/ }),
-/* 28 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global window, document, location, Event, setTimeout */

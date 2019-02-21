@@ -1,7 +1,7 @@
 /*
     ## Basics
 */
-import random from "random"
+var random  = require("random");
 module.exports = {
     // 返回一个随机的布尔值。
     boolean: function(min, max, cur) {
